@@ -26,7 +26,7 @@ public class ExtractGrammar {
 			if (e.getKey().contains("NONE") || e.getKey().contains("*")) {
 				continue;
 			}
-			System.out.println(e.getKey() + "\t" + e.getValue());
+			System.out.println(String.format("%5d\t%s", e.getValue(), e.getKey()));
 		}
 	}
 
