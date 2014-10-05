@@ -19,6 +19,7 @@ public class ExtractGrammar {
 
 		processPennTreebank(grammarExtractor);
 		process4000QuestionsTreebank(grammarExtractor);
+		processBNCTreebank(grammarExtractor);
 		System.out.println();
 
 		for (Entry<String, Integer> e : grammarExtractor.getRulesSortedByFrequency()) {
@@ -27,6 +28,10 @@ public class ExtractGrammar {
 			}
 			System.out.println(e.getKey() + "\t" + e.getValue());
 		}
+	}
+
+	private static void processBNCTreebank(GrammarExctractor grammarExtractor) throws Exception {
+		processFileWithBracketedSentence(new File("src/main/resources/bnc/bnc_1000_gold_trees_09"), grammarExtractor);
 	}
 
 	private static void process4000QuestionsTreebank(GrammarExctractor grammarExtractor) throws Exception {
