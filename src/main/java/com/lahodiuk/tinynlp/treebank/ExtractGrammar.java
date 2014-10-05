@@ -17,20 +17,8 @@ public class ExtractGrammar {
 	public static void main(String[] args) throws Exception {
 		GrammarExctractor grammarExtractor = new GrammarExctractor();
 
-		File treebankFolder = new File("src/main/resources/treebank/combined");
-		for (File treebankFile : treebankFolder.listFiles()) {
-			if (".DS_Store".equals(treebankFile.getName())) {
-				continue;
-			} else {
-				System.out.println(treebankFile.getName());
-			}
-
-			String treebankFileContent = readToString(treebankFile);
-			Collection<SyntaxTreeNode> trees = SyntaxTreeNode.parse(treebankFileContent);
-			for (SyntaxTreeNode root : trees) {
-				root.visit(grammarExtractor);
-			}
-		}
+		processPennTreebank(grammarExtractor);
+		process4000QuestionsTreebank(grammarExtractor);
 		System.out.println();
 
 		for (Entry<String, Integer> e : grammarExtractor.getRulesSortedByFrequency()) {
@@ -38,6 +26,31 @@ public class ExtractGrammar {
 				continue;
 			}
 			System.out.println(e.getKey() + "\t" + e.getValue());
+		}
+	}
+
+	private static void process4000QuestionsTreebank(GrammarExctractor grammarExtractor) throws Exception {
+		processFileWithBracketedSentence(new File("src/main/resources/questionbank/4000qs.txt"), grammarExtractor);
+	}
+
+	private static void processPennTreebank(GrammarExctractor grammarExtractor) throws Exception {
+		File treebankFolder = new File("src/main/resources/treebank/combined");
+		for (File treebankFile : treebankFolder.listFiles()) {
+			processFileWithBracketedSentence(treebankFile, grammarExtractor);
+		}
+	}
+
+	private static void processFileWithBracketedSentence(File treebankFile, SyntaxTreeNodeVisitor grammarExtractor) throws Exception {
+		if (".DS_Store".equals(treebankFile.getName())) {
+			return;
+		} else {
+			System.out.println(treebankFile.getName());
+		}
+
+		String treebankFileContent = readToString(treebankFile);
+		Collection<SyntaxTreeNode> trees = SyntaxTreeNode.parse(treebankFileContent);
+		for (SyntaxTreeNode root : trees) {
+			root.visit(grammarExtractor);
 		}
 	}
 
