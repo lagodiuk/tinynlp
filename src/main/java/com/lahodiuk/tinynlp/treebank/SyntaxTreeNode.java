@@ -19,6 +19,8 @@ public class SyntaxTreeNode {
 
 	private List<SyntaxTreeNode> children = new ArrayList<>();
 
+	private SyntaxTreeNode parent = null;
+
 	public SyntaxTreeNode(String leftHandSide) {
 		this.leftHandSide = leftHandSide;
 	}
@@ -33,10 +35,22 @@ public class SyntaxTreeNode {
 
 	public void addChild(SyntaxTreeNode child) {
 		this.children.add(child);
+		child.setParent(this);
 	}
 
 	public Collection<SyntaxTreeNode> getRightHandSide() {
 		return Collections.unmodifiableList(this.children);
+	}
+
+	public void setParent(SyntaxTreeNode parent) {
+		this.parent = parent;
+	}
+
+	public boolean isRoot() {
+		if (this.parent == null) {
+			return true;
+		}
+		return false;
 	}
 
 	public void visit(SyntaxTreeNodeVisitor visitor) {

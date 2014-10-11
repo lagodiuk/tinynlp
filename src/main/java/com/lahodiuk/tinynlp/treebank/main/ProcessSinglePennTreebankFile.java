@@ -1,4 +1,4 @@
-package com.lahodiuk.tinynlp.treebank;
+package com.lahodiuk.tinynlp.treebank.main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,10 +6,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Main {
+import com.lahodiuk.tinynlp.treebank.SyntaxTreeNode;
+import com.lahodiuk.tinynlp.treebank.SyntaxTreeNodeVisitor;
+
+public class ProcessSinglePennTreebankFile {
 
 	public static void main(String[] args) throws Exception {
-		try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/treebank/combined/wsj_0005.mrg"))) {
+		String fileName = "src/main/resources/treebank/combined/wsj_0005.mrg";
+
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			StringBuilder sb = new StringBuilder();
 			String s;
 			while ((s = br.readLine()) != null) {
@@ -44,6 +49,7 @@ public class Main {
 			}
 			this.rules.add(ruleBuilder.toString());
 		}
+
 		@Override
 		public void visitTerminal(SyntaxTreeNode node) {
 			this.sentenceBuilder.append(node.getLeftHandSide()).append(" ");
